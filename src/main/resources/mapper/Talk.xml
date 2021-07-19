@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zl.luntan.dal.dao.TalkDao">
+
+
+    <insert id="insertTalk" parameterType="com.zl.luntan.dal.entity.Talk">
+        insert into talk(u_id,context,send_time,up_time) values (#{user.uId},#{context},#{sendTime},#{upTime})
+    </insert>
+
+    <resultMap id="talk_map" type="com.zl.luntan.dal.entity.Talk">
+        <id column="t_id" property="tId"/>
+        <result column="context" property="context"/>
+        <result column="des" property="des"/>
+        <result column="state" property="state"/>
+        <result column="send_time" property="sendTime"/>
+        <result column="up_time" property="upTime"/>
+        <result column="is_del" property="isDel"/>
+        <association property="user" javaType="com.zl.luntan.dal.entity.User">
+            <id column="u_id" property="uId"/>
+            <result column="nickname" property="nickname"/>
+            <result column="headphoto" property="headPhoto"/>
+        </association>
+     </resultMap>
+
+    <select id="selecAllNTalk" resultMap="talk_map">
+        select * from talk left join user on user.u_id = talk.u_id where talk.is_del = 'N' order by send_time desc
+    </select>
+    <select id="countByUser" resultType="java.lang.Integer">
+        select count(u_id) from talk where u_id = #{user.uId} and is_del = 'W';
+    </select>
+
+</mapper>

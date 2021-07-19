@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zl.luntan.dal.dao.SiteDao">
+
+    <sql id="site_list">
+        site_name,site_img,des,up_time,login_addr,reg_addr
+    </sql>
+    <insert id="insertSite" parameterType="com.zl.luntan.dal.entity.Site">
+        insert into site()
+    </insert>
+    <update id="updSite" parameterType="com.zl.luntan.dal.entity.Site">
+        update site
+        <trim suffix="SET" suffixOverrides=",">
+            <if test="wId != null">w_id = #{wId},</if>
+            <if test="siteName != null">site_name = #{siteName}</if>
+            <if test="siteImg != null">site_img = #{siteImg}</if>
+            <if test="des != null">des = #{des}</if>
+            <if test="upTime != null">up_time = #{up_time}</if>
+            <if test="loginAddr != null">login_addr = #{loginAddr}</if>
+            <if test="regAddr != null">reg_addr = #{reg_addr}</if>
+        </trim>
+    </update>
+    <select id="selectNSites" resultType="com.zl.luntan.dal.entity.Site">
+        select <include refid="site_list"/> from site where is_del = 'N' and w_id = #{wId}
+    </select>
+</mapper>

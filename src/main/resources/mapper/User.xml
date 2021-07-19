@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zl.luntan.dal.dao.UserDao">
+
+    <sql id="user_list">
+        u_id,email,password,nickname,headphoto,reg_time,login_time,is_del,up_time
+    </sql>
+    <update id="updUsrIsDel" parameterType="java.lang.String">
+        update user set isDel = 'Y' where u_id = #{uId}
+    </update>
+    <update id="updateUser" parameterType="com.zl.luntan.dal.entity.User">
+        update user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="password != null">password = #{password},</if>
+            <if test="nickname != null">nickname = #{nickname},</if>
+            <if test="headPhoto != null">headphoto = #{headPhoto},</if>
+            <if test="upTime != null">up_time = #{upTime},</if>
+        </trim>
+        where u_id = #{uId}
+    </update>
+    <update id="updUsrLgTm" parameterType="com.zl.luntan.dal.entity.User">
+        update user set login_time = #{loginTime} where u_id = #{uId}
+    </update>
+    <select id="selectUserById" resultType="com.zl.luntan.dal.entity.User">
+        select <include refid="user_list"/> from user where u_id = #{uId}
+    </select>
+    <select id="selectAllUser" resultType="com.zl.luntan.dal.entity.User">
+        select <include refid="user_list"/> from user
+    </select>
+    <select id="selectUsrByPsd" resultType="com.zl.luntan.dal.entity.User">
+        select <include refid="user_list"/> from user where email = #{email} and password = #{password} and is_del = 'N'
+    </select>
+    <select id="selectUserEmail" resultType="java.lang.String">
+        select email from user where email = #{email}
+    </select>
+    <insert id="insertUser" parameterType="com.zl.luntan.dal.entity.User">
+        insert user (email, password, nickname, reg_time, up_time) values (#{email}, #{password}, #{nickname}, #{regTime}, #{upTime})
+    </insert>
+
+
+</mapper>

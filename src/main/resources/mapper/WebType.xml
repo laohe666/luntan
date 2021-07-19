@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zl.luntan.dal.dao.WebTypeDao">
+
+    <sql id="webtype_list">
+        w_id,type_name,web_img,des,up_time,is_del
+    </sql>
+    <insert id="insertWebType" parameterType="com.zl.luntan.dal.entity.WebType">
+        insert into webtype(type_name,web_img,des,up_time) values (#{typeName},#{webImg},#{des},#{upTime})
+    </insert>
+    <update id="updWTisDel">
+        update webtype set is_del = 'Y' where w_id = #{wId}
+    </update>
+
+    <select id="selectAllWT" resultType="com.zl.luntan.dal.entity.WebType">
+        select <include refid="webtype_list"/> from webtype
+    </select>
+    <select id="selectNAllWT" resultType="com.zl.luntan.dal.entity.WebType">
+        select <include refid="webtype_list"/> from webtype where is_del = 'N'
+    </select>
+
+
+
+</mapper>

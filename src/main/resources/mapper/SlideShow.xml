@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zl.luntan.dal.dao.SlideShowDao">
+
+    <sql id="slide_list">
+        slide_img,reg_addr,login_addr,up_time
+    </sql>
+    <insert id="insertSlide" parameterType="com.zl.luntan.dal.entity.SlideShow">
+        insert into slideshow(slide_img,reg_addr,login_addr,up_time) values (#{slideImg},#{regAddr},#{loginAddr},#{upTime})
+    </insert>
+    <update id="updateSlide" parameterType="com.zl.luntan.dal.entity.SlideShow">
+        update slideshow
+            <trim suffix="SET" suffixOverrides=",">
+                <if test="slideImg != null">slide_img = #{slideImg},</if>
+                <if test="regAddr != null">reg_addr = #{regAddr},</if>
+                <if test="loginAddr != null">login_addr = #{loginAddr},</if>
+                <if test="upTime != null">up_time = #{upTime},</if>
+            </trim>
+            where id = #{id}
+    </update>
+    <select id="selectAllNSlide" resultType="com.zl.luntan.dal.entity.SlideShow">
+        select <include refid="slide_list"/> from slide where is_del = 'N'
+    </select>
+
+</mapper>
