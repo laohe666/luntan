@@ -5,6 +5,7 @@ import com.zl.luntan.dal.entity.Site;
 import com.zl.luntan.service.SiteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,16 +23,19 @@ public class SiteServiceImpl implements SiteService {
 
 
     @Override
+    @Transactional
     public List<Site> selectNSites(int wId) {
         return siteDao.selectNSites(wId);
     }
 
     @Override
+    @Transactional
     public boolean insertSite(Site site) {
         return siteDao.insertSite(site) > 0;
     }
 
     @Override
+    @Transactional
     public boolean updSite(Site site) {
         return siteDao.updSite(site) > 0;
     }

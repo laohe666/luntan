@@ -1,8 +1,10 @@
 package com.zl.luntan.controller;
 
 import com.zl.luntan.common.enums.ComEnums;
+import com.zl.luntan.common.util.FileUpload;
 import com.zl.luntan.common.util.JwtUtils;
 import com.zl.luntan.common.util.StringUtils;
+import com.zl.luntan.dal.dto.FileUploadRsp;
 import com.zl.luntan.dal.dto.UserRsp;
 import com.zl.luntan.dal.entity.User;
 import com.zl.luntan.service.impl.UserServiceImpl;
@@ -11,14 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.print.DocFlavor;
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 
 /**
  * @author Sun Jingchun
@@ -43,7 +43,7 @@ public class UserController {
         //通过用户对象查询对象
         try {
             sqUser = userService.selectUsrByPsd(user.getEmail(), user.getPassword());
-        }catch (Exception e){
+        } catch (Exception e){
              rsp.setMsg("查询错误");
              rsp.setState(ComEnums.STATE_N);
              return rsp;
@@ -132,14 +132,50 @@ public class UserController {
         boolean flag = JwtUtils.verifyToken(token);
         if(flag){
             //获取用户邮箱
-
+//            userService.selectUsrByPsd();
             //先检查用户旧密码是否正确
-            userService.selectUsrByPsd()
+//            userService.selectUsrByPsd();
 
         }
         //
 
         return rsp;
+    }
+
+    /**
+     * 修改用户头像
+     **/
+    @ResponseBody
+    @RequestMapping("/upUsrHead")
+    public UserRsp upUsrHead(@RequestParam("file") MultipartFile file, String token){
+        UserRsp rsp = new UserRsp();
+        //先验证用户是否登陆
+        boolean flag = JwtUtils.verifyToken(token);
+        //如果登陆成功
+        if (flag) {
+            //将头像上传到服务器
+            FileUploadRsp fileUploadRsp = FileUpload.uploadFile(file);
+            if (!ComEnums.STATE_Y.equals(fileUploadRsp.getState())) {
+                rsp.setState(ComEnums.STATE_N);
+                rsp.setMsg("False");
+                return rsp;
+            }
+            //头像上传成功的话 新建对象
+            User user = new User();
+            user.setUId(Integer.parseInt(JwtUtils.getAudience(token)));
+            user.setUpTime(StringUtils.getNowTM());
+            user.setHeadPhoto(fileUploadRsp.getImgUrl());
+            boolean upUsrFlg = userService.updateUser(user);
+            // 如果更新失败
+            if (!upUsrFlg) {
+                rsp.setState(ComEnums.STATE_N);
+                rsp.setMsg("False");
+                return rsp;
+            }
+        }
+            rsp.setMsg("修改头像成功");
+            rsp.setState(ComEnums.STATE_Y);
+            return rsp;
     }
 
 

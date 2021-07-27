@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,16 +23,19 @@ public class SlideShowServiceImpl implements SlideShowService {
     @Autowired
     private SlideShowDao slideShowDao;
     @Override
+    @Transactional
     public List<SlideShow> selectAllNSlide() {
         return slideShowDao.selectAllNSlide();
     }
 
     @Override
+    @Transactional
     public boolean insertSlide(SlideShow slideShow) {
         return slideShowDao.insertSlide(slideShow) > 0;
     }
 
     @Override
+    @Transactional
     public boolean updateSlide(SlideShow slideShow) {
         return slideShowDao.updateSlide(slideShow) > 0;
     }
