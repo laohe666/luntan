@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.print.DocFlavor;
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.*;
 import java.io.File;
 
 /**
@@ -126,57 +127,81 @@ public class UserController {
      * */
     @ResponseBody
     @PostMapping("/upInfo")
-    public UserRsp upInfo(String newPsd, String token, String oldPsd, String nickname, MultipartFile file){
+    public UserRsp upInfo(String newPsd, String token, String oldPsd, String nickname){
+        System.out.println(newPsd+ token+ oldPsd+ nickname);
         UserRsp rsp = new UserRsp();
         // 先验证用户是否登陆
         boolean flag = JwtUtils.verifyToken(token);
         if(flag){
-            //获取用户邮箱
-//            userService.selectUsrByPsd();
-            //先检查用户旧密码是否正确
-//            userService.selectUsrByPsd();
+            //获取用户Id
+            String userId = JwtUtils.getAudience(token);
+            //比较老密码和新密码是否相同
+            String email = JwtUtils.getClaim(token,"email");
+            System.out.println(email);
+            //搜索用户信息
+            User user = userService.selectUsrByPsd(email, oldPsd);
+            if(user == null) {
+                rsp.setState(ComEnums.STATE_N);
+                rsp.setMsg("原密码错误");
+                return rsp;
+            }
+            User user1 = new User();
+            user1.setUId(Integer.parseInt(userId));
+            user1.setUpTime(StringUtils.getNowTM());
+            user1.setNickname(nickname);
+            user1.setPassword(newPsd);
+            try {
+                boolean upUsrFlg = userService.updateUser(user1);
+                if (!upUsrFlg){
+                    rsp.setMsg("更新用户失败");
+                    rsp.setState(ComEnums.STATE_N);
+                    return rsp;
+                }
 
+            } catch (Exception e) {
+                System.out.println("更新用户失败" + user1);
+            }
         }
-        //
-
+        rsp.setState(ComEnums.STATE_Y);
+        rsp.setState("更新成功");
         return rsp;
     }
 
-    /**
-     * 修改用户头像
-     **/
-    @ResponseBody
-    @RequestMapping("/upUsrHead")
-    public UserRsp upUsrHead(@RequestParam("file") MultipartFile file, String token){
-        UserRsp rsp = new UserRsp();
-        //先验证用户是否登陆
-        boolean flag = JwtUtils.verifyToken(token);
-        //如果登陆成功
-        if (flag) {
-            //将头像上传到服务器
-            FileUploadRsp fileUploadRsp = FileUpload.uploadFile(file);
-            if (!ComEnums.STATE_Y.equals(fileUploadRsp.getState())) {
-                rsp.setState(ComEnums.STATE_N);
-                rsp.setMsg("False");
-                return rsp;
-            }
-            //头像上传成功的话 新建对象
-            User user = new User();
-            user.setUId(Integer.parseInt(JwtUtils.getAudience(token)));
-            user.setUpTime(StringUtils.getNowTM());
-            user.setHeadPhoto(fileUploadRsp.getImgUrl());
-            boolean upUsrFlg = userService.updateUser(user);
-            // 如果更新失败
-            if (!upUsrFlg) {
-                rsp.setState(ComEnums.STATE_N);
-                rsp.setMsg("False");
-                return rsp;
-            }
-        }
-            rsp.setMsg("修改头像成功");
-            rsp.setState(ComEnums.STATE_Y);
-            return rsp;
-    }
+//    /**
+//     * 修改用户头像
+//     **/
+//    @ResponseBody
+//    @RequestMapping("/upUsrHead")
+//    public UserRsp upUsrHead(@RequestParam("file") MultipartFile file, String token){
+//        UserRsp rsp = new UserRsp();
+//        //先验证用户是否登陆
+//        boolean flag = JwtUtils.verifyToken(token);
+//        //如果登陆成功
+//        if (flag) {
+//            //将头像上传到服务器
+//            FileUploadRsp fileUploadRsp = FileUpload.uploadFile(file);
+//            if (!ComEnums.STATE_Y.equals(fileUploadRsp.getState())) {
+//                rsp.setState(ComEnums.STATE_N);
+//                rsp.setMsg("False");
+//                return rsp;
+//            }
+//            //头像上传成功的话 新建对象
+//            User user = new User();
+//            user.setUId(Integer.parseInt(JwtUtils.getAudience(token)));
+//            user.setUpTime(StringUtils.getNowTM());
+//            user.setHeadPhoto(fileUploadRsp.getImgUrl());
+//            boolean upUsrFlg = userService.updateUser(user);
+//            // 如果更新失败
+//            if (!upUsrFlg) {
+//                rsp.setState(ComEnums.STATE_N);
+//                rsp.setMsg("False");
+//                return rsp;
+//            }
+//        }
+//            rsp.setMsg("修改头像成功");
+//            rsp.setState(ComEnums.STATE_Y);
+//            return rsp;
+//    }
 
 
 }

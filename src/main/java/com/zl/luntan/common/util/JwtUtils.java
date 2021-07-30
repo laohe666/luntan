@@ -6,9 +6,12 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zl.luntan.dal.entity.User;
 import lombok.Data;
+import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -18,6 +21,7 @@ import java.util.Date;
  * created at 2021/7/10 23:22
  * copyright @2021 北京沐融信息科技股份有限公司
  */
+
 public class JwtUtils {
     /**
      * 创建token
@@ -65,10 +69,11 @@ public class JwtUtils {
     /**
      * 通过载荷名字获取载荷的值
      * */
+
     public static String getClaim(String token, String name){
         String claim = null;
         try {
-            claim = String.valueOf(JWT.decode(token).getClaim(name));
+            claim =  JWT.decode(token).getClaim(name).asString();
         }catch (Exception e) {
             return "getClaimFalse";
         }

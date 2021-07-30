@@ -5,6 +5,7 @@ import com.zl.luntan.dal.dto.SiteRsp;
 import com.zl.luntan.dal.entity.Site;
 import com.zl.luntan.service.impl.SiteServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -16,6 +17,7 @@ import java.util.List;
  * created at 2021/7/13 18:37
  * copyright @2021 北京沐融信息科技股份有限公司
  */
+@Controller
 public class SiteController {
 
     @Autowired
@@ -39,6 +41,7 @@ public class SiteController {
     @ResponseBody
     @PostMapping("/showNSite")
     public SiteRsp showNSite(int wId){
+        System.out.println(wId);
         SiteRsp rsp = new SiteRsp();
         // 查询所有的未被删除的网站
         try {

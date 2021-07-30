@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+
 /**
  * @author Sun Jingchun
  * @version 5.0.0
@@ -12,7 +14,7 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors
-public class Talk {
+public class Talk implements Serializable {
     /**
      * 主键
      */
