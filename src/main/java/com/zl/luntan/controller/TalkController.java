@@ -81,7 +81,7 @@ public class TalkController {
     @ResponseBody
     @PostMapping("/showAllNTalk")
     public TalkRsp showAllNTalks(int pageNum, int pageSize){
-        TalkRsp rsp = null;
+        TalkRsp rsp = new TalkRsp();
         try {
             rsp = talkService.selecAllNTalk(pageNum, pageSize);
             rsp.setMsg("查询成功");

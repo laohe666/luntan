@@ -36,7 +36,6 @@ public class TalkServiceImpl implements TalkService {
         TalkRsp rsp = new TalkRsp();
         PageHelper.startPage(pageNum, pageSize);
         List<Talk> talks = talkDao.selecAllNTalk();
-        System.out.println(talks.toString());
         PageInfo<Talk> pageInfo = new PageInfo<>(talks);
         rsp.setTalks(pageInfo.getList());
         rsp.setTotal(pageInfo.getTotal());

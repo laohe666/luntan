@@ -128,7 +128,6 @@ public class UserController {
     @ResponseBody
     @PostMapping("/upInfo")
     public UserRsp upInfo(String newPsd, String token, String oldPsd, String nickname){
-        System.out.println(newPsd+ token+ oldPsd+ nickname);
         UserRsp rsp = new UserRsp();
         // 先验证用户是否登陆
         boolean flag = JwtUtils.verifyToken(token);
@@ -163,7 +162,7 @@ public class UserController {
             }
         }
         rsp.setState(ComEnums.STATE_Y);
-        rsp.setState("更新成功");
+        rsp.setMsg("更新成功");
         return rsp;
     }
 

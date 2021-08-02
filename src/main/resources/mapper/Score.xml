@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zl.luntan.dal.dao.ScoreDao">
+
+    <sql id="score_list">
+        sc_id, des, addr, state, name, is_del, up_time, score_img, title
+    </sql>
+    <update id="delScore" parameterType="com.zl.luntan.dal.entity.Score">
+        update score set is_deal = 'Y' where sc_id = #{scId}
+    </update>
+    <update id="upScore">
+        update score
+        <trim prefix="set" suffixOverrides=",">
+            <if test="des != null and des != ''">des = #{des},</if>
+            <if test="addr != null and addr != ''">addr = #{addr},</if>
+            <if test="state != null and state != ''">state = #{state},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="isDel != null and isDel != ''">is_del = #{isDel},</if>
+            <if test="upTime != null and upTime != ''">up_time = #{upTime},</if>
+            <if test="scoreImg != null and scoreImg != ''">score_img = #{scoreImg},</if>
+            <if test="title != null and title != ''">title = #{title},</if>
+        </trim>
+        where sc_id = #{scId}
+    </update>
+    <select id="selectAll" resultType="com.zl.luntan.dal.entity.Score">
+        select
+        <include refid="score_list"/>
+        from score order by up_time desc
+    </select>
+
+    <select id="selectNAll" resultType="com.zl.luntan.dal.entity.Score">
+        select
+        <include refid="score_list"/>
+        from score where is_deal = 'N' order by up_time desc
+    </select>
+
+    <insert id="insertScore" parameterType="com.zl.luntan.dal.entity.Score">
+        insert into score(desc, addr, state, name, is_del, up_time, score_img, title)
+            values
+            (desc, addr, state, name, is_del, upTime, scoreImg, title)
+    </insert>
+</mapper>
