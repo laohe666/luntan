@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zl.luntan.dal.dao.AssureDao">
+    <sql id="assure_list">
+        as_id, reg_addr, login_addr, name, img_url, des, is_del, up_time
+    </sql>
+    <insert id="addAssure">
+        insert into assure (reg_addr, login_addr, name, img_url, des, is_del, up_time)
+            values
+            (#{regAddr}, #{loginAddr}, #{name}, #{imgUrl}, #{des}, #{isDel}, #{upTime})
+    </insert>
+    <update id="delAssure">
+        update assure set is_del = 'Y' where sc_id = #{scId}
+    </update>
+    <select id="selectAllNAssure" resultType="com.zl.luntan.dal.entity.Assure">
+        select <include refid="assure_list"/> from assure where is_del = 'N'
+    </select>
+
+
+</mapper>
