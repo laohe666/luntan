@@ -35,5 +35,10 @@ public class WebTypeRsp {
      * 响应
      * */
 
+    /**
+     * 总数
+     * */
+    private Long total;
+
 
 }

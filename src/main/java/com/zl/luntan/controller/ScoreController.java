@@ -7,6 +7,7 @@ import com.zl.luntan.service.impl.ScoreServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -28,20 +29,20 @@ public class ScoreController {
     /**
      * 展示所有未删除的黑分
      * */
-    @RequestMapping("/showAllNScore")
+    @PostMapping("/showAllNScore")
     @ResponseBody
     public ScoreRsp showAllN(int pageNum, int pageSize){
         ScoreRsp rsp = new ScoreRsp();
         //查询所有未删除的黑分
-        try {
+//        try {
             rsp = scoreService.selectNAll(pageNum, pageSize);
             rsp.setMsg("成功");
             rsp.setState(ComEnums.STATE_Y);
-        } catch (Exception e){
-            rsp.setMsg("失败");
-            rsp.setState(ComEnums.STATE_N);
-            return rsp;
-        }
+//        } catch (Exception e){
+//            rsp.setMsg("失败");
+//            rsp.setState(ComEnums.STATE_N);
+//            return rsp;
+//        }
         return rsp;
     }
 }

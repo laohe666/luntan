@@ -20,5 +20,9 @@ public class ComEnums {
 
     public static final String IMG_PNG = ".png";
 
+    public static final String Y = "Y";
+
+    public static final String N = "N";
+
     public static final int THREE = 3;
 }

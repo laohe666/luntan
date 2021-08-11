@@ -1,5 +1,6 @@
 package com.zl.luntan.service;
 
+import com.zl.luntan.dal.dto.UserRsp;
 import com.zl.luntan.dal.entity.User;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public interface UserService {
     /**
      * 搜索用户列表
      * */
-    List<User> selectAllUser();
+    UserRsp selectAllUser(int pageSize, int pageNum);
 
     /**
      * 通过邮箱和密码搜索用户
@@ -35,7 +36,7 @@ public interface UserService {
     /**
      * 修改用户id_del字段
      * */
-    boolean updUsrIsDel(String uId);
+    boolean updUsrIsDel(int uId, String isDel);
 
     /**
      * 修改用户信息

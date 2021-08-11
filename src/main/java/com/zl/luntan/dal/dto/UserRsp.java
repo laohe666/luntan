@@ -42,5 +42,9 @@ public class UserRsp implements Serializable {
      * */
     private String state;
 
+    /**
+     * 用户总数
+     * */
+    private Long total;
 
 }

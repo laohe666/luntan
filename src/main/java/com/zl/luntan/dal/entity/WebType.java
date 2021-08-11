@@ -46,6 +46,7 @@ public class WebType implements Serializable {
      * */
     private String isDel;
 
+
     @Override
     public String toString(){
         return JSON.toJSONString(this);

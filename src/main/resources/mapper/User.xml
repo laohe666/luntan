@@ -5,8 +5,8 @@
     <sql id="user_list">
         u_id,email,password,nickname,headphoto,reg_time,login_time,is_del,up_time
     </sql>
-    <update id="updUsrIsDel" parameterType="java.lang.String">
-        update user set isDel = 'Y' where u_id = #{uId}
+    <update id="updUsrIsDel">
+        update user set is_del = #{isDel} where u_id = #{uId}
     </update>
     <update id="updateUser" parameterType="com.zl.luntan.dal.entity.User">
         update user

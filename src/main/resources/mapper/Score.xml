@@ -6,7 +6,7 @@
         sc_id, des, addr, state, name, is_del, up_time, score_img, title
     </sql>
     <update id="delScore" parameterType="com.zl.luntan.dal.entity.Score">
-        update score set is_deal = 'Y' where sc_id = #{scId}
+        update score set is_del = 'Y' where sc_id = #{scId}
     </update>
     <update id="upScore">
         update score
@@ -31,7 +31,7 @@
     <select id="selectNAll" resultType="com.zl.luntan.dal.entity.Score">
         select
         <include refid="score_list"/>
-        from score where is_deal = 'N' order by up_time desc
+        from score where is_del = 'N' order by up_time desc
     </select>
 
     <insert id="insertScore" parameterType="com.zl.luntan.dal.entity.Score">

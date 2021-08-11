@@ -1,5 +1,6 @@
 package com.zl.luntan.service;
 
+import com.zl.luntan.dal.dto.WebTypeRsp;
 import com.zl.luntan.dal.entity.WebType;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public interface WebTypeService {
     /**
      * 查询所有WebType
      * */
-    List<WebType> selectAllWT();
+    WebTypeRsp selectAllWT(int pageNum, int pageSize);
 
     /**
      * 查询没有删除的WebType

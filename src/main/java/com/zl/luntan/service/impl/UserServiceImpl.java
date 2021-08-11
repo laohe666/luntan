@@ -1,6 +1,9 @@
 package com.zl.luntan.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.zl.luntan.dal.dao.UserDao;
+import com.zl.luntan.dal.dto.UserRsp;
 import com.zl.luntan.dal.entity.User;
 import com.zl.luntan.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +31,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public List<User> selectAllUser() {
-        return userDao.selectAllUser();
+    public UserRsp selectAllUser(int pageNum, int pageSize) {
+        UserRsp rsp = new UserRsp();
+        PageHelper.startPage(pageNum, pageSize);
+        List<User> users = userDao.selectAllUser();
+        PageInfo<User> pageInfo = new PageInfo<>(users);
+        rsp.setUserList(pageInfo.getList());
+        rsp.setTotal(pageInfo.getTotal());
+        return rsp;
     }
 
     @Override
@@ -46,8 +55,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public boolean updUsrIsDel(String uId) {
-        return userDao.updUsrIsDel(uId) > 0;
+    public boolean updUsrIsDel(int uId, String isDel) {
+        return userDao.updUsrIsDel(uId, isDel) > 0;
     }
 
     @Override

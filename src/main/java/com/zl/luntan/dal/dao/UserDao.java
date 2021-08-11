@@ -36,7 +36,7 @@ public interface UserDao {
     /**
      * 修改用户id_del字段
      * */
-    int updUsrIsDel(String uId);
+    int updUsrIsDel(int uId, String isDel);
 
     /**
      * 修改用户信息

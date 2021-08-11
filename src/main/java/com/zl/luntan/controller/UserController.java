@@ -20,6 +20,7 @@ import javax.print.DocFlavor;
 import javax.servlet.http.HttpServletRequest;
 import javax.swing.*;
 import java.io.File;
+import java.util.List;
 
 /**
  * @author Sun Jingchun
@@ -38,7 +39,7 @@ public class UserController {
     @ResponseBody
     @PostMapping("/login")
     public UserRsp loginUser(@RequestBody User user, HttpServletRequest request){
-        System.out.println(request.getRemoteAddr());
+        System.out.println(user.getEmail() + request.getRemoteAddr());
         UserRsp rsp = new UserRsp();
         User sqUser;
         //通过用户对象查询对象
@@ -111,7 +112,6 @@ public class UserController {
         UserRsp rsp = new UserRsp();
         //检验是否失效
         boolean flag = JwtUtils.verifyToken(token);
-        System.out.println(flag);
         if(flag){
             rsp.setState(ComEnums.STATE_Y);
             rsp.setMsg("你已经登陆");
@@ -136,7 +136,6 @@ public class UserController {
             String userId = JwtUtils.getAudience(token);
             //比较老密码和新密码是否相同
             String email = JwtUtils.getClaim(token,"email");
-            System.out.println(email);
             //搜索用户信息
             User user = userService.selectUsrByPsd(email, oldPsd);
             if(user == null) {
@@ -203,4 +202,65 @@ public class UserController {
 //    }
 
 
+    /**
+     * 查询所有用户
+     * */
+    @ResponseBody
+    @RequestMapping("/showAllUser")
+    public UserRsp showAllUser(int pageNum, int pageSize){
+        UserRsp rsp = new UserRsp();
+        //用户
+        try {
+            rsp = userService.selectAllUser(pageNum, pageSize);
+            rsp.setState(ComEnums.STATE_Y);
+            rsp.setMsg("查询用户成功");
+        } catch (Exception e) {
+            rsp.setMsg("查询失败");
+            rsp.setState(ComEnums.STATE_N);
+            return rsp;
+        }
+        return rsp;
+    }
+
+    /**
+     * 更改是否删除状态用户
+     * */
+    @RequestMapping("/delUser")
+    @ResponseBody
+    public UserRsp delUser(int uId, String isDel){
+        UserRsp rsp = new UserRsp();
+        if (ComEnums.Y.equals(isDel)) {
+            userService.updUsrIsDel(uId,ComEnums.N);
+            rsp.setState(ComEnums.STATE_Y);
+            rsp.setMsg("恢复成功");
+        } else {
+            userService.updUsrIsDel(uId,ComEnums.Y);
+            rsp.setMsg("删除成功");
+            rsp.setState(ComEnums.STATE_Y);
+        }
+        return rsp;
+    }
+
+    /**
+     * 管理员修改用户
+     * */
+    @PostMapping("/adminUpUser")
+    @ResponseBody
+    public UserRsp adminUpUser(@RequestBody User user){
+        UserRsp rsp = new UserRsp();
+        user.setUpTime(StringUtils.getNowTM());
+        try {
+            if(!userService.updateUser(user)){
+                rsp.setMsg("更新失败");
+                rsp.setState(ComEnums.STATE_N);
+            }
+        } catch (Exception e) {
+            rsp.setState(ComEnums.STATE_N);
+            rsp.setMsg("修改失败数据库报错");
+            return rsp;
+        }
+        rsp.setState(ComEnums.STATE_Y);
+        rsp.setMsg("更新成功");
+        return rsp;
+    }
 }
