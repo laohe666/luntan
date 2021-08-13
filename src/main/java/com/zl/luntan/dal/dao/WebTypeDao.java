@@ -32,11 +32,20 @@ public interface WebTypeDao {
     /**
      * 删除
      * */
-    int updWTisDel(int wId);
+    int updWTisDel(int wId, String isDel);
 
     /**
      * 修改webType
      * */
     int updWebType(WebType webType);
 
+    /**
+     * 修改网站类型图片
+     * */
+    int updateImg(WebType webType);
+
+    /**
+     * 搜索网站类型和名称
+     * */
+    List<WebType> selectNameAndId();
 }

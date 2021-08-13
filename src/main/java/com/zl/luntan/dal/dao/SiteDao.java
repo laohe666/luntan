@@ -30,4 +30,14 @@ public interface SiteDao {
      * */
     int updSite(Site site);
 
+    /**
+     * 展示所有网站
+     * */
+    List<Site> selectAll();
+
+    /**
+     * 更新网站头像
+     * */
+    int updateSiteImg(Site site);
+
 }

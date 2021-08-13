@@ -10,17 +10,24 @@
     </insert>
     <update id="updSite" parameterType="com.zl.luntan.dal.entity.Site">
         update site
-        <trim suffix="SET" suffixOverrides=",">
+        <trim prefix="SET" suffixOverrides=",">
             <if test="wId != null">w_id = #{wId},</if>
-            <if test="siteName != null">site_name = #{siteName}</if>
-            <if test="siteImg != null">site_img = #{siteImg}</if>
-            <if test="des != null">des = #{des}</if>
-            <if test="upTime != null">up_time = #{up_time}</if>
-            <if test="loginAddr != null">login_addr = #{loginAddr}</if>
-            <if test="regAddr != null">reg_addr = #{reg_addr}</if>
-        </trim>
+            <if test="siteName != null">site_name = #{siteName},</if>
+            <if test="des != null">des = #{des},</if>
+            <if test="upTime != null">up_time = #{up_time},</if>
+            <if test="loginAddr != null">login_addr = #{loginAddr},</if>
+            <if test="regAddr != null">reg_addr = #{regAddr},</if>
+        </trim> where s_id = #{sId}
+    </update>
+    <update id="updateSiteImg">
+        update site
+            set site_img = #{siteImg}, up_time = #{upTime}
+            where s_id = #{sId}
     </update>
     <select id="selectNSites" resultType="com.zl.luntan.dal.entity.Site">
         select <include refid="site_list"/> from site where is_del = 'N' and w_id = #{wId}
+    </select>
+    <select id="selectAll" resultType="com.zl.luntan.dal.entity.Site">
+        select * from site order by des
     </select>
 </mapper>

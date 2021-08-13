@@ -49,7 +49,7 @@ public class WebTypeServiceImpl implements WebTypeService {
 
     @Override
     @Transactional
-    public boolean updWTisDel(int wId) {
-        return webTypeDao.updWTisDel(wId) > 0;
+    public boolean updWTisDel(int wId,String isDel) {
+        return webTypeDao.updWTisDel(wId, isDel) > 0;
     }
 }

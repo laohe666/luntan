@@ -31,5 +31,5 @@ public interface WebTypeService {
     /**
      * 删除
      * */
-    boolean updWTisDel(int wId);
+    boolean updWTisDel(int wId, String isDel);
 }

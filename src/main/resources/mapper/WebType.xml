@@ -9,7 +9,7 @@
         insert into webtype(type_name,web_img,des,up_time) values (#{typeName},#{webImg},#{des},#{upTime})
     </insert>
     <update id="updWTisDel">
-        update webtype set is_del = 'Y' where w_id = #{wId}
+        update webtype set is_del = #{isDel} where w_id = #{wId}
     </update>
 
     <select id="selectAllWT" resultType="com.zl.luntan.dal.entity.WebType">
@@ -18,6 +18,21 @@
     <select id="selectNAllWT" resultType="com.zl.luntan.dal.entity.WebType">
         select <include refid="webtype_list"/> from webtype where is_del = 'N'
     </select>
+    <select id="selectNameAndId" resultType="com.zl.luntan.dal.entity.WebType">
+        select w_id, type_name from webtype group by w_id
+    </select>
+
+    <update id="updWebType" parameterType="com.zl.luntan.dal.entity.WebType">
+        update webtype
+        <trim prefix="set" suffixOverrides=",">
+            <if test="typeName != null and typeName != ''">type_name = #{typeName},</if>
+            <if test="webImg != null and webImg != ''">des = #{des},</if>
+            <if test="upTime != null and upTime != ''">up_time = #{upTime},</if>
+        </trim> where w_id = #{wId}
+    </update>
+    <update id="updateImg">
+        update webtype set web_img = #{webImg}, up_time = #{upTime} where w_id = #{wId}
+    </update>
 
 
 

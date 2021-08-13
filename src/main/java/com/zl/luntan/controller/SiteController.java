@@ -1,13 +1,17 @@
 package com.zl.luntan.controller;
 
 import com.zl.luntan.common.enums.ComEnums;
+import com.zl.luntan.common.util.FileUpload;
+import com.zl.luntan.common.util.StringUtils;
+import com.zl.luntan.dal.dao.SiteDao;
+import com.zl.luntan.dal.dto.FileUploadRsp;
 import com.zl.luntan.dal.dto.SiteRsp;
 import com.zl.luntan.dal.entity.Site;
 import com.zl.luntan.service.impl.SiteServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -22,6 +26,8 @@ public class SiteController {
 
     @Autowired
     private SiteServiceImpl siteService;
+    @Autowired
+    private SiteDao siteDao;
 
     /**
      *
@@ -59,7 +65,74 @@ public class SiteController {
     }
 
     /**
-     *
+     * 后台查询所有的
      * */
-    
+    @ResponseBody
+    @GetMapping("/selectSite")
+    public SiteRsp selectSites(){
+        SiteRsp rsp = new SiteRsp();
+        List<Site> sites = siteDao.selectAll();
+        rsp.setSiteList(sites);
+        rsp.setMsg("查询成功");
+        return rsp;
+    }
+
+    /**
+     * 修改所有的
+     * */
+    @ResponseBody
+    @PostMapping("/updateSite")
+    public SiteRsp updateSite(@RequestBody Site site){
+        SiteRsp rsp = new SiteRsp();
+        if(!siteService.updSite(site)){
+            rsp.setMsg("修改失败");
+            return rsp;
+        }
+        rsp.setMsg("修改成功");
+        return rsp;
+    }
+
+    /**
+     * 修改网站图片
+     * */
+    @ResponseBody
+    @PostMapping("/updateSiteImg")
+    public SiteRsp updateSiteImg(@RequestParam("file") MultipartFile file,String sId){
+        SiteRsp rsp = new SiteRsp();
+        if(file.isEmpty()){
+            rsp.setMsg("图片为空");
+            return rsp;
+        }
+        FileUploadRsp fileUploadRsp = FileUpload.uploadFile(file);
+        if(ComEnums.STATE_N.equals(fileUploadRsp.getState())){
+            rsp.setMsg("文件上传时失败");
+            return rsp;
+        }
+        Site site = new Site();
+        site.setSiteImg(fileUploadRsp.getImgUrl());
+        site.setUpTime(StringUtils.getNowTM());
+        site.setSId(Integer.parseInt(sId));
+        if(siteDao.updateSiteImg(site) != 1){
+            rsp.setMsg("更新失败");
+            return rsp;
+        }
+        rsp.setMsg("更新成功");
+        return rsp;
+    }
+
+    /**
+     * 增加
+     * */
+    @ResponseBody
+    @RequestMapping("/addSite")
+    public SiteRsp addSite(@RequestParam("file") MultipartFile file, String siteName, String des, String loginAddr, String regAddr,String wId){
+        SiteRsp rsp = new SiteRsp();
+        if(file.isEmpty()){
+            rsp.setMsg("文件是空");
+            return rsp;
+        }
+
+
+        return rsp;
+    }
 }
