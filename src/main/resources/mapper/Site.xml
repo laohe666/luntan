@@ -6,7 +6,8 @@
         site_name,site_img,des,up_time,login_addr,reg_addr
     </sql>
     <insert id="insertSite" parameterType="com.zl.luntan.dal.entity.Site">
-        insert into site()
+        insert into site(w_id, site_name,site_img,des,up_time,login_addr,reg_addr)
+        value (#{wId}, #{siteName}, #{siteImg}, #{des}, #{upTime},  #{loginAddr},#{regAddr})
     </insert>
     <update id="updSite" parameterType="com.zl.luntan.dal.entity.Site">
         update site
@@ -17,6 +18,7 @@
             <if test="upTime != null">up_time = #{up_time},</if>
             <if test="loginAddr != null">login_addr = #{loginAddr},</if>
             <if test="regAddr != null">reg_addr = #{regAddr},</if>
+            <if test="isDel != null and isDel != ''">is_del = #{isDel},</if>
         </trim> where s_id = #{sId}
     </update>
     <update id="updateSiteImg">

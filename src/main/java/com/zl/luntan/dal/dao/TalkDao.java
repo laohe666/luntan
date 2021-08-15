@@ -28,4 +28,13 @@ public interface TalkDao {
      * */
     int countByUser(Talk talk);
 
+    /**
+     * 搜索Talk
+     * */
+    List<Talk> selectAllTalk();
+
+    /**
+     * 更新Talk
+     * */
+    int updateTalk(Talk talk);
 }

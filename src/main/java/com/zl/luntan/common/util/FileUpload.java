@@ -56,7 +56,7 @@ public class FileUpload {
             rsp.setState(ComEnums.STATE_N);
             return rsp;
         }
-        rsp.setImgUrl("http://localhost:8080/" + uuid + fileForMat);
+        rsp.setImgUrl("http://localhost:8082/" + uuid + fileForMat);
         rsp.setMsg("文件上传成功");
         rsp.setState(ComEnums.STATE_Y);
         return rsp;

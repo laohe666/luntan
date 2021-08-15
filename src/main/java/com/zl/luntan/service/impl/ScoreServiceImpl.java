@@ -24,8 +24,14 @@ public class ScoreServiceImpl implements ScoreService {
     private ScoreDao scoreDao;
 
     @Override
-    public List<Score> selectAll() {
-        return scoreDao.selectAll();
+    public ScoreRsp selectAll(int pageNum, int pageSize) {
+        ScoreRsp rsp = new ScoreRsp();
+        PageHelper.startPage(pageNum,pageSize);
+        List<Score> scores = scoreDao.selectAll();
+        PageInfo<Score> pageInfo = new PageInfo<>(scores);
+        rsp.setTotal(pageInfo.getTotal());
+        rsp.setScores(pageInfo.getList());
+        return rsp;
     }
 
     @Override
@@ -50,7 +56,7 @@ public class ScoreServiceImpl implements ScoreService {
     }
 
     @Override
-    public int upScore(Score score) {
-        return scoreDao.upScore(score);
+    public boolean upScore(Score score) {
+        return scoreDao.upScore(score) > 0;
     }
 }

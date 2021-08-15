@@ -1,14 +1,16 @@
 package com.zl.luntan.controller;
 
 import com.zl.luntan.common.enums.ComEnums;
+import com.zl.luntan.common.util.FileUpload;
+import com.zl.luntan.common.util.StringUtils;
 import com.zl.luntan.dal.dto.AssureRsp;
+import com.zl.luntan.dal.dto.FileUploadRsp;
 import com.zl.luntan.dal.entity.Assure;
 import com.zl.luntan.service.impl.AssureServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -43,4 +45,29 @@ public class AssureController {
         }
         return rsp;
     }
+
+
+    /**
+     * 添加担保网站
+     * */
+    @ResponseBody
+    @PostMapping("/addAssure")
+    public AssureRsp addAssure(@RequestParam("file") MultipartFile file, String name, String regAddr, String loginAddr, String des){
+        AssureRsp rsp = new AssureRsp();
+        if (file.isEmpty()){
+            rsp.setMsg("图片为空");
+            return rsp;
+        }
+        FileUploadRsp fileUploadRsp = FileUpload.uploadFile(file);
+        Assure assure = new Assure();
+        assure.setImgUrl(fileUploadRsp.getImgUrl());
+        assure.setName(name);
+        assure.setRegAddr(regAddr);
+        assure.setLoginAddr(loginAddr);
+        assure.setDes(des);
+        assure.setUpTime(StringUtils.getNowTM());
+        assureService.addAssure(assure);
+        return rsp;
+    }
+
 }

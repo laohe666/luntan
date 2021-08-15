@@ -47,4 +47,16 @@ public class TalkServiceImpl implements TalkService {
     public int countByUser(Talk talk) {
         return talkDao.countByUser(talk);
     }
+
+    @Override
+    @Transactional
+    public TalkRsp selectAllTalk(int pageNum, int pageSize) {
+        TalkRsp rsp = new TalkRsp();
+        PageHelper.startPage(pageNum, pageSize);
+        List<Talk> talks = talkDao.selectAllTalk();
+        PageInfo<Talk> pageInfo = new PageInfo<>(talks);
+        rsp.setTotal(pageInfo.getTotal());
+        rsp.setTalks(pageInfo.getList());
+        return rsp;
+    }
 }

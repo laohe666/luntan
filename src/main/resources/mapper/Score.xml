@@ -17,8 +17,8 @@
             <if test="name != null and name != ''">name = #{name},</if>
             <if test="isDel != null and isDel != ''">is_del = #{isDel},</if>
             <if test="upTime != null and upTime != ''">up_time = #{upTime},</if>
-            <if test="scoreImg != null and scoreImg != ''">score_img = #{scoreImg},</if>
             <if test="title != null and title != ''">title = #{title},</if>
+            <if test="scoreImg != null and scoreImg != ''">score_img = #{scoreImg},</if>
         </trim>
         where sc_id = #{scId}
     </update>
@@ -35,8 +35,8 @@
     </select>
 
     <insert id="insertScore" parameterType="com.zl.luntan.dal.entity.Score">
-        insert into score(desc, addr, state, name, is_del, up_time, score_img, title)
+        insert into score(des, addr, state, name,  up_time, score_img, title)
             values
-            (desc, addr, state, name, is_del, upTime, scoreImg, title)
+            (#{des}, #{addr}, #{state}, #{name},  #{upTime}, #{scoreImg}, #{title})
     </insert>
 </mapper>

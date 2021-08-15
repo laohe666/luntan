@@ -6,6 +6,17 @@
     <insert id="insertTalk" parameterType="com.zl.luntan.dal.entity.Talk">
         insert into talk(u_id,context,send_time,up_time) values (#{user.uId},#{context},#{sendTime},#{upTime})
     </insert>
+    <update id="updateTalk">
+        update talk
+        <trim prefix="set" suffixOverrides=",">
+            <if test="context != null and context != ''">context = #{context},</if>
+            <if test="des != null and des != ''">des = #{des},</if>
+            <if test="state != null and state != ''">state = #{state},</if>
+            <if test="upTime != null and upTime != ''">up_time = #{upTime},</if>
+            <if test="isDel != null and isDel != ''">isDel = #{isDel},</if>
+            where t_id = #{tId}
+        </trim>
+    </update>
 
     <resultMap id="talk_map" type="com.zl.luntan.dal.entity.Talk">
         <id column="t_id" property="tId"/>
@@ -27,6 +38,9 @@
     </select>
     <select id="countByUser" resultType="java.lang.Integer">
         select count(u_id) from talk where u_id = #{user.uId} and is_del = 'W';
+    </select>
+    <select id="selectAllTalk" resultMap="talk_map">
+        select * from talk left join user on user.u_id = talk.u_id order by send_time desc
     </select>
 
 </mapper>

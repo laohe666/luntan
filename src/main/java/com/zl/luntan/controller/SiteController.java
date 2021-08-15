@@ -131,8 +131,16 @@ public class SiteController {
             rsp.setMsg("文件是空");
             return rsp;
         }
-
-
+        FileUploadRsp fileUploadRsp = FileUpload.uploadFile(file);
+        Site site = new Site();
+        site.setUpTime(StringUtils.getNowTM());
+        site.setSiteImg(fileUploadRsp.getImgUrl());
+        site.setDes(des);
+        site.setSiteName(siteName);
+        site.setLoginAddr(loginAddr);
+        site.setRegAddr(regAddr);
+        site.setWId(Integer.parseInt(wId));
+        siteService.insertSite(site);
         return rsp;
     }
 }

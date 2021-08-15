@@ -28,15 +28,16 @@ class LuntanApplicationTests {
 //        System.out.println(absolutePath);
 //        String a= "高德充值高德无敌高德无敌高德无敌高德无敌高德无敌高德无敌高德无敌高德无敌高德无敌高德无敌 高德充值高德无敌高德无敌高德无敌高德无敌高德无敌高德无敌高德无敌高德无敌高德无敌高德无敌 高德充值高德无敌高德无敌高德无敌高德无敌高德无敌高德无敌高德无敌高德无敌高德无敌高德无敌 高德充值高德无敌高德无敌高德无敌高德无敌高德无敌高德无敌高德无敌高德无敌高德无敌高德无敌 高德充高德充值高德无敌高德无敌高德无敌高德无敌高德无敌高德无敌高德无敌高德无敌高德无敌高德无敌 高德充高德充值高德无敌高德无敌高德无敌高德无敌高德无敌高德无敌高德无敌高德无敌高德无敌高德无敌 高德充";
 //        System.out.println(a.length());
-        Talk talk = new Talk();
-        User user = new User();
-//        List<Talk> talk1 = talkDao.selecAllNTalk();
-//        System.out.println(talk1);
-        user.setUId(1);
-        talk.setUser(user);
-        int i = talkDao.countByUser(talk);
-        System.out.println(i);
-
+//        Talk talk = new Talk();
+//        User user = new User();
+////        List<Talk> talk1 = talkDao.selecAllNTalk();
+////        System.out.println(talk1);
+//        user.setUId(1);
+//        talk.setUser(user);
+//        int i = talkDao.countByUser(talk);
+//        System.out.println(i);
+        System.out.println(System.getProperty("user.dir") + File.separator + "src" +File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator);
+        System.out.println("/**");
     }
 
 }

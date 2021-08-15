@@ -27,4 +27,9 @@ public interface TalkService {
      * 计算当前用户未审核的条数
      * */
     int countByUser(Talk talk);
+
+    /**
+     * 搜索所有得talk
+     * */
+    TalkRsp selectAllTalk(int pageNum, int pageSize);
 }

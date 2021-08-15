@@ -3,6 +3,7 @@ package com.zl.luntan.controller;
 import com.zl.luntan.common.enums.ComEnums;
 import com.zl.luntan.common.util.JwtUtils;
 import com.zl.luntan.common.util.StringUtils;
+import com.zl.luntan.dal.dao.TalkDao;
 import com.zl.luntan.dal.dto.TalkRsp;
 import com.zl.luntan.dal.entity.Talk;
 import com.zl.luntan.dal.entity.User;
@@ -28,6 +29,8 @@ public class TalkController {
     @Autowired
     private TalkServiceImpl talkService;
 
+    @Autowired
+    private TalkDao talkDao;
     /**
      * 发布Talk
      * */
@@ -92,6 +95,36 @@ public class TalkController {
             rsp.setState(ComEnums.STATE_N);
             return rsp;
         }
+        return rsp;
+    }
+
+
+    /**
+     * 搜素所有的talk
+     * */
+    @ResponseBody
+    @PostMapping("/selectAllTalk")
+    public TalkRsp selectAllTalk(int pageNum, int pageSize){
+        TalkRsp rsp = talkService.selectAllTalk(pageNum, pageSize);
+        rsp.setMsg("查询成功");
+        return rsp;
+    }
+
+    /**
+     * 更新talk
+     * */
+    @ResponseBody
+    @PostMapping("/updateTalk")
+    public TalkRsp updateTalk(@RequestBody Talk talk){
+        TalkRsp rsp = new TalkRsp();
+        if(talk != null) {
+            talk.setUpTime(StringUtils.getNowTM());
+            if(talkDao.updateTalk(talk) < 0){
+                rsp.setMsg("更新失败");
+                return rsp;
+            }
+        }
+        rsp.setMsg("更新成功");
         return rsp;
     }
 }
